@@ -22,7 +22,7 @@ export type Titles = {
 
 export const columns: ColumnDef<Titles>[] = [
   {
-    id: "select",
+    id: "checkboxes",
     header: ({ table }) => (
       <Checkbox
         checked={
@@ -57,49 +57,60 @@ export const columns: ColumnDef<Titles>[] = [
   {
     accessorKey: "rhythm",
     header: "Rhythm",
-    cell: ({ row }) => (
-      <Badge
-        variant={
-          row.original.rhythm === "Focus"
-            ? "destructive"
-            : row.original.rhythm === "Flow"
-            ? "secondary"
-            : "gray"
-        }
-      >
-        {row.original.rhythm}
-      </Badge>
-    ),
+    cell: ({ row }) => {
+      const { rhythm } = row.original;
+      return (
+        <Select defaultValue={rhythm}>
+          <SelectTrigger>
+            <SelectValue placeholder={rhythm} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Flow">
+              <Badge variant="secondary">Flow</Badge>
+            </SelectItem>
+            <SelectItem value="Normal">
+              <Badge variant="gray">Normal</Badge>
+            </SelectItem>
+            <SelectItem value="Focus">
+              <Badge variant="destructive">Focus</Badge>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      );
+    },
+    enableHiding: true,
+    enableSorting: true,
+
   },
 
   {
-    id: "select",
+    id: "Status",
     header: "Status",
     cell: ({ row }) => {
       const { status } = row.original;
 
       return (
         <div className="w-1/2">
-          <Select defaultValue={status} >
+          <Select defaultValue={status}>
             <SelectTrigger>
               <SelectValue placeholder={status} />
             </SelectTrigger>
-            <SelectContent defaultValue="Not Started" defaultChecked>
+            <SelectContent defaultChecked>
               <SelectItem value="Not Started">
                 <div className="flex space-x-4 items-center">
-                  <AlarmClockOff size={20}/>
+                  <AlarmClockOff size={20} />
                   <span>Not Started</span>
                 </div>
               </SelectItem>
               <SelectItem value="Started">
                 <div className="flex space-x-4 items-center">
-                  <AlarmClock size={20}/>
+                  <AlarmClock size={20} />
                   <span>Started</span>
                 </div>
               </SelectItem>
               <SelectItem value="Finished">
                 <div className="flex space-x-4 items-center">
-                  <AlarmClockCheck size={20}/>
+                  <AlarmClockCheck size={20} />
                   <span>Finished</span>
                 </div>
               </SelectItem>
@@ -108,7 +119,5 @@ export const columns: ColumnDef<Titles>[] = [
         </div>
       );
     },
-
-    
   },
 ];
