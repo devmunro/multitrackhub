@@ -108,5 +108,7 @@ export const columns: ColumnDef<Titles>[] = [
         </div>
       );
     },
+
+    
   },
 ];

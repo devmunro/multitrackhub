@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import InputTask from "../layout/tasks/InputTask";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,6 +73,7 @@ export function DataTable<TData, TValue>({
               </TableCell>
             </TableRow>
           )}
+          <InputTask/>
         </TableBody>
       </Table>
     </div>
