@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "title": "Complete Project A",
+    "status": "Started",
+    "group": "Projects",
+    "rhythm": "Normal"
+  },
+  {
+    "id": 2,
+    "title": "Study for Exam",
+    "status": "Started",
+    "group": "Education",
+    "rhythm": "Focus"
+
+  },
+  {
+    "id": 3,
+    "title": "Internship Report",
+    "status": "Started",
+    "group": "Intern",
+    "rhythm": "Focus"
+  },
+  {
+    "id": 4,
+    "title": "Learn React",
+    "status": "Not Started",
+    "group": "Learning",
+    "rhythm": "Normal"
+    
+  },
+  {
+    "id": 5,
+    "title": "Exercise for 30 minutes",
+    "status": "Finished",
+    "group": "Health",
+    "rhythm": "Flow"
+  }
+]
