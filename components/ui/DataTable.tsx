@@ -28,11 +28,14 @@ import { Button } from "@/components/ui/button";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onAddTask: () => void;
+
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  onAddTask,
 }: DataTableProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -118,7 +121,7 @@ export function DataTable<TData, TValue>({
               </TableCell>
             </TableRow>
           )}
-          <InputTask />
+          <InputTask onAddTask={onAddTask} />
         </TableBody>
       </Table>
     </div>

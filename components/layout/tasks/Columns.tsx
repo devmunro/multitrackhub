@@ -16,7 +16,7 @@ export type Titles = {
   id: number;
   title: string;
   status: "Not Started" | "Started" | "Finished";
-  group: string;
+  group: "Health" | "Projects" | "Intern" | "Learning" | "Education";
   rhythm: "Focus" | "Normal" | "Flow";
 };
 
@@ -46,21 +46,44 @@ export const columns: ColumnDef<Titles>[] = [
   {
     accessorKey: "title",
     header: "Title",
-    cell: ({ row }) => (
-      <div className="flex items-start space-x-3">
-        <Badge>{row.original.group}</Badge>
-        <div>{row.original.title}</div>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const { group } = row.original;
+      return (
+        <div className="flex items-center space-x-3">
+          <Select defaultValue={group || "Normal"}>
+            <SelectTrigger className="border-0 w-min">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="border-0">
+              <SelectItem value="Health">
+                <Badge>Health</Badge>
+              </SelectItem>
+              <SelectItem value="Projects">
+                <Badge>Projects</Badge>
+              </SelectItem>
+              <SelectItem value="Intern">
+                <Badge>Intern</Badge>
+              </SelectItem>
+              <SelectItem value="Learning">
+                <Badge>Learning</Badge>
+              </SelectItem>
+              <SelectItem value="Education">
+                <Badge>Education</Badge>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          <div>{row.original.title}</div>
+        </div>
+      );
+    },
   },
-
   {
     accessorKey: "rhythm",
     header: "Rhythm",
     cell: ({ row }) => {
       const { rhythm } = row.original;
       return (
-        <Select defaultValue={rhythm}>
+        <Select defaultValue={rhythm || "Normal"}>
           <SelectTrigger>
             <SelectValue placeholder={rhythm} />
           </SelectTrigger>
@@ -80,7 +103,6 @@ export const columns: ColumnDef<Titles>[] = [
     },
     enableHiding: true,
     enableSorting: true,
-
   },
 
   {
@@ -91,7 +113,7 @@ export const columns: ColumnDef<Titles>[] = [
 
       return (
         <div className="w-1/2">
-          <Select defaultValue={status}>
+          <Select defaultValue={status || "Not Started"}>
             <SelectTrigger>
               <SelectValue placeholder={status} />
             </SelectTrigger>
