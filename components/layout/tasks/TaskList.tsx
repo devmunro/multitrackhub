@@ -4,7 +4,12 @@ import { DataTable } from "../../ui/DataTable";
 import { useState, useEffect } from "react";
 import taskData from "../../../data/taskDummyData.json";
 
-// ...
+interface Task {
+    title: string;
+    status: string;
+    group: string;
+    rhythm: string;
+  }
 
 export default function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
