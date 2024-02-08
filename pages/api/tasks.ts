@@ -1,15 +1,12 @@
-// pages/api/tasks.ts
 import { NextApiRequest, NextApiResponse } from 'next';
-import { connectToMongoDB } from '../../lib/db'; // Adjust the path as necessary
+import { connectToMongoDB } from '../../lib/db'; 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       const db = await connectToMongoDB();
-      const task = req.body; // Assuming the task data is sent in the request body
+      const task = req.body; 
 
-      // Insert the new task into the MongoDB collection
-      console.log(db.collection)
       const collection = db.collection('tasks');
       console.log("test collection")
       const result = await collection.insertOne(task);

@@ -18,8 +18,16 @@ export default function TaskList() {
 
   const fetchData = async () => {
     try {
-      setTasks(taskData);
-    } catch (error) {}
+      const response = await fetch('/api/getTasks');
+      if (!response.ok) {
+        throw new Error('Failed to fetch tasks');
+      }
+      const tasks = await response.json(); 
+      console.log(tasks)
+      setTasks(tasks); 
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleAddTask = async (title: string) => {
