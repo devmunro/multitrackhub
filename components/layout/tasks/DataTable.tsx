@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import InputTask from "../layout/tasks/InputTask";
+import InputTask from "./InputTask";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -29,7 +29,6 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   onAddTask: () => void;
-
 }
 
 export function DataTable<TData, TValue>({

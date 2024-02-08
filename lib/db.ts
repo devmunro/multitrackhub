@@ -1,18 +1,20 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db } from 'mongodb';
 import { config } from 'dotenv';
 
 config();
 console.log("hi there")
 const uri = process.env.MONGODB_URI;
+let client: MongoClient;
+let db: Db;
 
 export async function connectToMongoDB() {
-    const client = new MongoClient(uri);
-    console.log("trying to connect")
-    try {
+    if (!client || !client.isConnected()) {
+        client = new MongoClient(uri);
         await client.connect();
-        console.log('Connected to MongoDB');
-    } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
+      }
+      if (!db) {
+        db = client.db('multitaskhub'); // Use your actual database name
+      }
+      return db;
     }
-}
 

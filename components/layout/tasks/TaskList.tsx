@@ -1,6 +1,6 @@
 "use client";
 import { columns } from "./Columns";
-import { DataTable } from "../../ui/DataTable";
+import { DataTable } from "./DataTable";
 import { useState, useEffect } from "react";
 import taskData from "../../../data/taskDummyData.json";
 import { ColumnDef } from "@tanstack/react-table";
@@ -22,16 +22,33 @@ export default function TaskList() {
     } catch (error) {}
   };
 
-  const handleAddTask = (title: string) => {
+  const handleAddTask = async (title: string) => {
     const newTaskObject = {
       title: title,
       status: "",
       group: "Normal",
       rhythm: "",
     };
-    console.log(newTaskObject);
-    setTasks((prevTasks) => [...prevTasks, newTaskObject]);
-    setNewTask("");
+    try {
+      const response = await fetch('/api/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTaskObject),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add task');
+      }
+  
+      // Optionally, fetch tasks again to refresh the list, or update the state directly
+      // fetchData();
+      setTasks((prevTasks) => [...prevTasks, newTaskObject]); // Optimistic UI update
+      setNewTask(""); // Assuming you have this state for resetting an input field
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
   };
 
   useEffect(() => {

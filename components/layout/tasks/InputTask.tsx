@@ -6,20 +6,18 @@ interface InputProps {
 }
 
 const InputTask: React.FC<InputProps> = ({ onAddTask }) => {
-    const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
-      };
-    
-      const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            console.log(title)
-          onAddTask(title);
-         
-          setTitle(''); 
-        }
-      };
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  const handleKeyDown = async (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && title.trim()) {
+      await onAddTask(title); 
+      setTitle(""); 
+    }
+  };
 
   return (
     <TableRow>
