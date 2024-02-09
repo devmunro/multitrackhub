@@ -1,0 +1,28 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { connectToMongoDB } from '../../lib/db';
+import { ObjectId } from 'mongodb';
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method === 'PUT') {
+        try {
+                const { _id, ...updateData } = req.body; 
+                const db = await connectToMongoDB();
+                const result = await db.collection('tasks').updateOne(
+                    { _id: ObjectId.createFromHexString(_id) }, 
+                    { $set: updateData }
+                );
+
+                if (result.modifiedCount === 0) {
+                        return res.status(404).json({ message: 'Task not found' });
+                }
+
+                res.status(200).json({ message: 'Task updated successfully' });
+        } catch (error) {
+            console.error('Failed to update task:', error);
+            res.status(500).json({ error: 'Failed to update task in MongoDB' });
+        }
+    } else {
+        res.setHeader('Allow', ['PUT']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
+    }
+}
