@@ -4,21 +4,20 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  GroupLabels,
+  RhythmLabels,
+  StatusLabels,
+} from "./ColumnComponents/ColumnComponents";
 import { AlarmClockCheck, AlarmClockOff, AlarmClock } from "lucide-react";
 
 export type Titles = {
   id: number;
   title: string;
-  status: "Not Started" | "Started" | "Finished";
-  group: "Health" | "Projects" | "Intern" | "Learning" | "Education";
-  rhythm: "Focus" | "Normal" | "Flow";
+  status: string;
+  group: string;
+  rhythm: string;
 };
+const editable = false; //is the row editable
 
 export const columns: ColumnDef<Titles>[] = [
   {
@@ -48,30 +47,17 @@ export const columns: ColumnDef<Titles>[] = [
     header: "Title",
     cell: ({ row }) => {
       const { group } = row.original;
+
       return (
         <div className="flex items-center space-x-3">
-          <Select defaultValue={group || "Normal"}>
-            <SelectTrigger className="border-0 w-min">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="border-0">
-              <SelectItem value="Health">
-                <Badge>Health</Badge>
-              </SelectItem>
-              <SelectItem value="Projects">
-                <Badge>Projects</Badge>
-              </SelectItem>
-              <SelectItem value="Intern">
-                <Badge>Intern</Badge>
-              </SelectItem>
-              <SelectItem value="Learning">
-                <Badge>Learning</Badge>
-              </SelectItem>
-              <SelectItem value="Education">
-                <Badge>Education</Badge>
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          {editable ? (
+            // Render editable Select component when truth is true
+            <GroupLabels selection={group} />
+          ) : (
+            // Render this div when truth is false
+            <Badge variant="outline">{group}</Badge>
+          )}
+          {/* This line will render regardless of the truth's value */}
           <div>{row.original.title}</div>
         </div>
       );
@@ -82,23 +68,12 @@ export const columns: ColumnDef<Titles>[] = [
     header: "Rhythm",
     cell: ({ row }) => {
       const { rhythm } = row.original;
-      return (
-        <Select defaultValue={rhythm || "Normal"}>
-          <SelectTrigger>
-            <SelectValue placeholder={rhythm} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Flow">
-              <Badge variant="secondary">Flow</Badge>
-            </SelectItem>
-            <SelectItem value="Normal">
-              <Badge variant="gray">Normal</Badge>
-            </SelectItem>
-            <SelectItem value="Focus">
-              <Badge variant="destructive">Focus</Badge>
-            </SelectItem>
-          </SelectContent>
-        </Select>
+      return editable ? (
+        // Render editable Select component when truth is true
+        <RhythmLabels selection={rhythm} />
+      ) : (
+        // Render this div with static text when truth is false
+        <div>{rhythm}</div>
       );
     },
     enableHiding: true,
@@ -111,33 +86,31 @@ export const columns: ColumnDef<Titles>[] = [
     cell: ({ row }) => {
       const { status } = row.original;
 
-      return (
-        <div className="w-1/2">
-          <Select defaultValue={status || "Not Started"}>
-            <SelectTrigger>
-              <SelectValue placeholder={status} />
-            </SelectTrigger>
-            <SelectContent defaultChecked>
-              <SelectItem value="Not Started">
-                <div className="flex space-x-4 items-center">
-                  <AlarmClockOff size={20} />
-                  <span>Not Started</span>
-                </div>
-              </SelectItem>
-              <SelectItem value="Started">
-                <div className="flex space-x-4 items-center">
-                  <AlarmClock size={20} />
-                  <span>Started</span>
-                </div>
-              </SelectItem>
-              <SelectItem value="Finished">
-                <div className="flex space-x-4 items-center">
-                  <AlarmClockCheck size={20} />
-                  <span>Finished</span>
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
+      return editable ? (
+        // Render the Select component for editable state
+        <StatusLabels selection={status} />
+      ) : (
+        // Render static content when not editable
+        <div className="w-1/2 flex space-x-4 items-center">
+          {/* Assuming you have icons or text representation for the static view */}
+          {status === "Not Started" && (
+            <>
+              <AlarmClockOff size={20} />
+              <span>Not Started</span>
+            </>
+          )}
+          {status === "Started" && (
+            <>
+              <AlarmClock size={20} />
+              <span>Started</span>
+            </>
+          )}
+          {status === "Finished" && (
+            <>
+              <AlarmClockCheck size={20} />
+              <span>Finished</span>
+            </>
+          )}
         </div>
       );
     },

@@ -30,20 +30,14 @@ export default function TaskList() {
     }
   };
 
-  const handleAddTask = async (title: string) => {
-    const newTaskObject = {
-      title: title,
-      status: "",
-      group: "Normal",
-      rhythm: "",
-    };
+  const handleAddTask = async (taskData) => {
     try {
       const response = await fetch('/api/tasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newTaskObject),
+        body: JSON.stringify(taskData),
       });
   
       if (!response.ok) {
@@ -52,7 +46,7 @@ export default function TaskList() {
   
       // Optionally, fetch tasks again to refresh the list, or update the state directly
       // fetchData();
-      setTasks((prevTasks) => [...prevTasks, newTaskObject]); // Optimistic UI update
+      setTasks((prevTasks) => [...prevTasks, taskData]); // Optimistic UI update
       setNewTask(""); // Assuming you have this state for resetting an input field
     } catch (error) {
       console.error('Error adding task:', error);

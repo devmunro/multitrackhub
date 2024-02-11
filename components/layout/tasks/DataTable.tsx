@@ -24,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,6 +49,11 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
+
+  const [toggleShow, setToggleShow] = React.useState(false);
+  const toggleAddTask = () => {
+    setToggleShow(!toggleShow);
+  };
 
   return (
     <div className="rounded-md border">
@@ -120,7 +126,20 @@ export function DataTable<TData, TValue>({
               </TableCell>
             </TableRow>
           )}
-          <InputTask onAddTask={onAddTask} />
+          {!toggleShow && (
+            <TableRow>
+              <TableCell colSpan={columns.length}>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={toggleAddTask}
+                >
+                  <PlusCircle />
+                </Button>
+              </TableCell>
+            </TableRow>
+          )}
+          {toggleShow && <InputTask onAddTask={onAddTask} toggleAddTask={toggleAddTask}/>}
         </TableBody>
       </Table>
     </div>
