@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import { AlarmClockCheck, AlarmClockOff, AlarmClock } from "lucide-react";
 
-export const GroupLabels = ({ selection, onChange })  => {
+export const GroupLabels = ({ selection, onChange }: { selection: string, onChange: (value: string) => void })  => {
   return (
     <Select value={selection} onValueChange={onChange} defaultValue={selection || "Learning"}>
       <SelectTrigger className="border-0 w-min">
@@ -37,7 +37,7 @@ export const GroupLabels = ({ selection, onChange })  => {
   );
 };
 
-export const RhythmLabels = ({ selection, onChange }) => {
+export const RhythmLabels = ({ selection, onChange }: { selection: string, onChange: (value: string) => void }) => {
   return (
     <Select value={selection} onValueChange={onChange} defaultValue={selection || "Normal"}>
       <SelectTrigger>
@@ -60,7 +60,7 @@ export const RhythmLabels = ({ selection, onChange }) => {
   );
 };
 
-export const StatusLabels = ({ selection, onChange }) => {
+export const StatusLabels = ({ selection, onChange }: { selection: string, onChange: (value: string) => void }) => {
   return (
     <div className="w-1/2 flex space-x-4 items-center">
     <Select value={selection} onValueChange={onChange} defaultValue={selection || "Not Started"}>

@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import {
   GroupLabels,
@@ -9,21 +9,27 @@ import { PlusCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface InputProps {
-  onAddTask: (title: string) => void;
+  onAddTask: (allTaskData: object) => void;
+  toggleAddTask: () => void;
+}
+
+interface allTaskData {
+  title: string;
+  group: string;
+  rhythm: string;
+  status: string;
 }
 
 const InputTask: React.FC<InputProps> = ({ onAddTask, toggleAddTask }) => {
-  const [taskData, setTaskData] = useState<TaskData>([
-    {
-      title: "",
-      group: "",
-      rhythm: "",
-      status: "",
-    },
-  ]);
+  const [taskData, setTaskData] = useState<allTaskData>({
+    title: "",
+    group: "Learning",
+    rhythm: "Normal",
+    status: "Not Started",
+  });
 
-  const handleChange = (value: string, field: keyof TaskData) => {
-    setTaskData((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (value: string, field: keyof allTaskData) => {
+    setTaskData((prev: allTaskData) => ({ ...prev, [field]: value }));
   };
 
   const handleKeyDown = async (event: KeyboardEvent<HTMLInputElement>) => {
@@ -33,27 +39,23 @@ const InputTask: React.FC<InputProps> = ({ onAddTask, toggleAddTask }) => {
       toggleAddTask();
     }
   };
-
-  const handleAddTask = async (event) => {
+  
+  const handleAddTask = async (event: React.MouseEvent) => {
     event.preventDefault();
-  
-    // Check if title is not empty or contains only whitespace characters
-    if (!taskData.title.trim()) {
-      // If title is empty or contains only whitespace characters, return early
-      return;
+    if (taskData.title.trim()) {
+      await onAddTask(taskData); 
+      toggleAddTask();
     }
-  
-    // If title is not empty, proceed to add the task
-    await onAddTask(taskData);
-    toggleAddTask();
   };
+
+
   return (
     <TableRow className="text-xs disabled:hover ">
       <TableCell></TableCell>
       <TableCell className="flex space-x-2">
         <GroupLabels
-          selected={taskData.group}
-          onChange={(value) => handleChange(value, "group")}
+          selection={taskData.group}
+          onChange={(value: string) => handleChange(value, "group")}
         />
         <input
           className="border-2"
@@ -67,14 +69,14 @@ const InputTask: React.FC<InputProps> = ({ onAddTask, toggleAddTask }) => {
       </TableCell>
       <TableCell>
         <RhythmLabels
-          selected={taskData.rhythm}
-          onChange={(value) => handleChange(value, "rhythm")}
+          selection={taskData.rhythm} 
+          onChange={(value: string) => handleChange(value, "rhythm")}
         />
       </TableCell>
       <TableCell>
         <StatusLabels
-          selected={taskData.status}
-          onChange={(value) => handleChange(value, "status")}
+          selection={taskData.status} 
+          onChange={(value: string) => handleChange(value, "status")}
         />
       </TableCell>
       <TableCell>

@@ -1,5 +1,4 @@
 "use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +16,7 @@ export type Titles = {
   group: string;
   rhythm: string;
 };
-const editable = false; //is the row editable
+const editable = false; //is the row editable, this needs to be changed
 
 export const columns: ColumnDef<Titles>[] = [
   {
@@ -52,7 +51,7 @@ export const columns: ColumnDef<Titles>[] = [
         <div className="flex items-center space-x-3">
           {editable ? (
             // Render editable Select component when truth is true
-            <GroupLabels selection={group} />
+            <GroupLabels selection={group} onChange={(value) => {}} />
           ) : (
             // Render this div when truth is false
             <Badge variant="outline">{group}</Badge>
@@ -70,7 +69,7 @@ export const columns: ColumnDef<Titles>[] = [
       const { rhythm } = row.original;
       return editable ? (
         // Render editable Select component when truth is true
-        <RhythmLabels selection={rhythm} />
+        <RhythmLabels selection={rhythm} onChange={(value) => {}} />
       ) : (
         // Render this div with static text when truth is false
         <div>{rhythm}</div>
@@ -88,7 +87,7 @@ export const columns: ColumnDef<Titles>[] = [
 
       return editable ? (
         // Render the Select component for editable state
-        <StatusLabels selection={status} />
+        <StatusLabels selection={status} onChange={(value) => {}} />
       ) : (
         // Render static content when not editable
         <div className="w-1/2 flex space-x-4 items-center">

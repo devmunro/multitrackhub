@@ -7,9 +7,9 @@ import { ColumnDef } from "@tanstack/react-table";
 
 interface Task {
   title: string;
-  status: string;
   group: string;
   rhythm: string;
+  status: string;
 }
 
 export default function TaskList() {
@@ -30,7 +30,7 @@ export default function TaskList() {
     }
   };
 
-  const handleAddTask = async (taskData) => {
+  const handleAddTask = async (taskData: Task) => {
     try {
       const response = await fetch('/api/tasks', {
         method: 'POST',
@@ -43,11 +43,9 @@ export default function TaskList() {
       if (!response.ok) {
         throw new Error('Failed to add task');
       }
-  
-      // Optionally, fetch tasks again to refresh the list, or update the state directly
-      // fetchData();
-      setTasks((prevTasks) => [...prevTasks, taskData]); // Optimistic UI update
-      setNewTask(""); // Assuming you have this state for resetting an input field
+
+      setTasks((prevTasks) => [...prevTasks, taskData]); 
+      setNewTask(""); 
     } catch (error) {
       console.error('Error adding task:', error);
     }

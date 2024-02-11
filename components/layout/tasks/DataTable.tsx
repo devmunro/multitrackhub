@@ -1,6 +1,5 @@
 "use client";
 import * as React from "react";
-
 import {
   ColumnDef,
   flexRender,
@@ -139,7 +138,9 @@ export function DataTable<TData, TValue>({
               </TableCell>
             </TableRow>
           )}
-          {toggleShow && <InputTask onAddTask={onAddTask} toggleAddTask={toggleAddTask}/>}
+          {toggleShow && (
+            <InputTask onAddTask={onAddTask} toggleAddTask={toggleAddTask} />
+          )}
         </TableBody>
       </Table>
     </div>
