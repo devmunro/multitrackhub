@@ -22,6 +22,23 @@ export type Actions = {
 export const useTaskStore = create<State & Actions>()((set) => ({
   tasks: [],
 
+  // ### FETCH TASKS ###
+  fetchTasks: async () => {
+    try {
+      const response = await fetch("/api/getTasks");
+      if (!response.ok) {
+        throw new Error("Failed to fetch tasks");
+      }
+      const tasks = await response.json();
+      console.log(tasks, "task json");
+
+      set({ tasks });
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  },
+
+  // ### ADD TASK ###
   addTask: async (taskData) => {
     try {
       const response = await fetch("/api/addTask", {
@@ -44,29 +61,34 @@ export const useTaskStore = create<State & Actions>()((set) => ({
       console.error("Error adding task:", error);
     }
   },
-  removeTask: (id) =>
-    set((state) => ({
-      tasks: state.tasks.filter((task) => task.id !== id),
-    })),
 
+  // ### REMOVE TASK ###
+  removeTask: async (id) => {
+    try {
+      const response = await fetch("/api/deleteTask", {
+        method: "Delete",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to remove task");
+      }
+
+      // Update the state by filtering out the task to remove
+      set((state) => ({
+        tasks: state.tasks.filter((task) => task.id !== id),
+      }));
+    } catch (error) {
+      console.error("Error removing task:", error);
+    }
+  },
+
+  // ### UPDATE TASK ###
   updateTask: (id, task) =>
     set((state) => ({
       tasks: state.tasks.map((task) => (task.id === id ? task : task)),
     })),
-
-  //FETCH TASKS
-  fetchTasks: async () => {
-    try {
-      const response = await fetch("/api/getTasks");
-      if (!response.ok) {
-        throw new Error("Failed to fetch tasks");
-      }
-      const tasks = await response.json();
-      console.log(tasks, "task json");
-
-      set({ tasks });
-    } catch (error) {
-      console.error("Error fetching tasks:", error);
-    }
-  },
 }));
