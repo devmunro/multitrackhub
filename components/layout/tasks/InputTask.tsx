@@ -7,47 +7,42 @@ import {
 } from "./ColumnComponents/ColumnComponents";
 import { PlusCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Task, useTaskStore } from "@/lib/store";
 
 interface InputProps {
-  onAddTask: (allTaskData: object) => void;
   toggleAddTask: () => void;
 }
 
-interface allTaskData {
-  title: string;
-  group: string;
-  rhythm: string;
-  status: string;
-}
-
-const InputTask: React.FC<InputProps> = ({ onAddTask, toggleAddTask }) => {
-  const [taskData, setTaskData] = useState<allTaskData>({
+const InputTask: React.FC<InputProps> = ({ toggleAddTask }) => {
+  const [taskData, setTaskData] = useState<Task>({
+    id: Date.now(),
     title: "",
     group: "Learning",
     rhythm: "Normal",
     status: "Not Started",
   });
 
-  const handleChange = (value: string, field: keyof allTaskData) => {
-    setTaskData((prev: allTaskData) => ({ ...prev, [field]: value }));
+  const addTask = useTaskStore((state) => state.addTask);
+
+  const handleChange = (value: string, field: keyof Task) => {
+    setTaskData((prev: Task) => ({ ...prev, [field]: value }));
   };
 
   const handleKeyDown = async (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && taskData.title.trim()) {
       event.preventDefault();
-      await onAddTask(taskData);
-      toggleAddTask();
-    }
-  };
-  
-  const handleAddTask = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    if (taskData.title.trim()) {
-      await onAddTask(taskData); 
+      await addTask(taskData);
       toggleAddTask();
     }
   };
 
+  const handleAddTask = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (taskData.title.trim()) {
+      await addTask(taskData);
+      toggleAddTask();
+    }
+  };
 
   return (
     <TableRow className="text-xs disabled:hover ">
@@ -69,13 +64,13 @@ const InputTask: React.FC<InputProps> = ({ onAddTask, toggleAddTask }) => {
       </TableCell>
       <TableCell>
         <RhythmLabels
-          selection={taskData.rhythm} 
+          selection={taskData.rhythm}
           onChange={(value: string) => handleChange(value, "rhythm")}
         />
       </TableCell>
       <TableCell>
         <StatusLabels
-          selection={taskData.status} 
+          selection={taskData.status}
           onChange={(value: string) => handleChange(value, "status")}
         />
       </TableCell>

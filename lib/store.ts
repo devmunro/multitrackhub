@@ -16,15 +16,34 @@ export type Actions = {
   addTask: (task: Task) => void;
   removeTask: (id: number) => void;
   updateTask: (id: number, task: Task) => void;
-  fetchTasks: () => Promise<void>; 
-
+  fetchTasks: () => Promise<void>;
 };
 
 export const useTaskStore = create<State & Actions>()((set) => ({
   tasks: [],
 
-  addTask: (task) => set((state) => ({ tasks: [...state.tasks, task] })),
+  addTask: async (taskData) => {
+    try {
+      const response = await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(taskData),
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to add task");
+      }
+
+      // Update the state with the new task
+      set((state) => ({
+        tasks: [...state.tasks, taskData],
+      }));
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
+  },
   removeTask: (id) =>
     set((state) => ({
       tasks: state.tasks.filter((task) => task.id !== id),
@@ -43,7 +62,7 @@ export const useTaskStore = create<State & Actions>()((set) => ({
         throw new Error("Failed to fetch tasks");
       }
       const tasks = await response.json();
-      console.log(tasks, "task json")
+      console.log(tasks, "task json");
 
       set({ tasks });
     } catch (error) {
