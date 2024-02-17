@@ -29,8 +29,6 @@ export const useTaskStore = create<State & Actions>()((set) => ({
         throw new Error("Failed to fetch tasks");
       }
       const tasks = await response.json();
-      console.log(tasks, "task json");
-
       set({ tasks });
     } catch (error) {
       console.error("Error fetching tasks:", error);
@@ -40,6 +38,8 @@ export const useTaskStore = create<State & Actions>()((set) => ({
   // ### ADD TASK ###
   addTask: async (taskData) => {
     try {
+
+        console.log(taskData)
       const response = await fetch("/api/addTask", {
         method: "POST",
         headers: {
@@ -54,6 +54,7 @@ export const useTaskStore = create<State & Actions>()((set) => ({
 
       //get latest task
       const newTask = await response.json();
+      console.log(newTask.task, "new task");
 
       // Update the state with the new task
       set((state) => ({
