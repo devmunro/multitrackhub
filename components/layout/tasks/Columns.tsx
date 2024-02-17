@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
+  DeleteButton,
   GroupLabels,
   RhythmLabels,
   StatusLabels,
@@ -10,7 +11,7 @@ import {
 import { AlarmClockCheck, AlarmClockOff, AlarmClock } from "lucide-react";
 
 export type Titles = {
-  id: number;
+  _id: string;
   title: string;
   status: string;
   group: string;
@@ -83,8 +84,6 @@ export const columns: ColumnDef<Titles>[] = [
     id: "Status",
     header: "Status",
     cell: ({ row }) => {
-      const { status } = row.original;
-
       return editable ? (
         // Render the Select component for editable state
         <StatusLabels selection={status} onChange={(value) => {}} />
@@ -112,6 +111,15 @@ export const columns: ColumnDef<Titles>[] = [
           )}
         </div>
       );
+    },
+  },
+  {
+    id: "Delete",
+    header: "Delete",
+    cell: ({ row }) => {
+      const id = row.original._id;
+
+      return <DeleteButton taskId={id} />;
     },
   },
 ];

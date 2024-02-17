@@ -52,9 +52,12 @@ export const useTaskStore = create<State & Actions>()((set) => ({
         throw new Error("Failed to add task");
       }
 
+      //get latest task
+      const newTask = await response.json();
+
       // Update the state with the new task
       set((state) => ({
-        tasks: [...state.tasks, taskData],
+        tasks: [...state.tasks, newTask.task],
       }));
     } catch (error) {
       console.error("Error adding task:", error);
@@ -64,7 +67,7 @@ export const useTaskStore = create<State & Actions>()((set) => ({
   // ### REMOVE TASK ###
   removeTask: async (id) => {
     try {
-      const response = await fetch("/api/deleteTask", {
+      const response = await fetch(`/api/deleteTask?id=${id}`, {
         method: "Delete",
 
         headers: {
