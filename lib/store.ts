@@ -24,7 +24,7 @@ export const useTaskStore = create<State & Actions>()((set) => ({
 
   addTask: async (taskData) => {
     try {
-      const response = await fetch("/api/tasks", {
+      const response = await fetch("/api/addTask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
