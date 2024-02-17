@@ -2,8 +2,6 @@
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
 import { useState, useEffect } from "react";
-import taskData from "../../../data/taskDummyData.json";
-import { ColumnDef } from "@tanstack/react-table";
 
 interface Task {
   title: string;
