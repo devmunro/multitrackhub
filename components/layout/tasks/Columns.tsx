@@ -84,6 +84,8 @@ export const columns: ColumnDef<Titles>[] = [
     id: "Status",
     header: "Status",
     cell: ({ row }) => {
+      const {status } = row.original;
+
       return editable ? (
         // Render the Select component for editable state
         <StatusLabels selection={status} onChange={(value) => {}} />
