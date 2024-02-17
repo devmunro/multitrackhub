@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 export type Task = {
-  id: number;
+  _id: string;
   title: string;
   group: string;
   rhythm: string;
