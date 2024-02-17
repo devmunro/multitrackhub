@@ -1,32 +1,18 @@
 "use client";
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useTaskStore } from "@/lib/store";
+import { Task } from "@/lib/store";
 
-interface Task {
-  title: string;
-  group: string;
-  rhythm: string;
-  status: string;
-}
+
 
 export default function TaskList() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTask, setNewTask] = useState("");
+  const { tasks, addTask, fetchTasks } = useTaskStore();
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/api/getTasks');
-      if (!response.ok) {
-        throw new Error('Failed to fetch tasks');
-      }
-      const tasks = await response.json(); 
-      console.log(tasks)
-      setTasks(tasks); 
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    fetchTasks(); 
+  }, [fetchTasks]);
 
   const handleAddTask = async (taskData: Task) => {
     try {
@@ -42,16 +28,12 @@ export default function TaskList() {
         throw new Error('Failed to add task');
       }
 
-      setTasks((prevTasks) => [...prevTasks, taskData]); 
-      setNewTask(""); 
+      addTask(taskData); 
     } catch (error) {
       console.error('Error adding task:', error);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <div className="container mx-auto py-10">
