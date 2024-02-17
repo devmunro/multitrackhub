@@ -15,7 +15,6 @@ interface InputProps {
 
 const InputTask: React.FC<InputProps> = ({ toggleAddTask }) => {
   const [taskData, setTaskData] = useState<Task>({
-    id: Date.now(),
     title: "",
     group: "Learning",
     rhythm: "Normal",

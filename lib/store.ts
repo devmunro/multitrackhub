@@ -13,9 +13,8 @@ export type State = {
 };
 
 export type Actions = {
-  addTask: (task: Task) => void;
-  removeTask: (id: number) => void;
-  updateTask: (id: number, task: Task) => void;
+  addTask: (task: Task) => Promise<void>;
+  removeTask: (id: string) => Promise<void>;
   fetchTasks: () => Promise<void>;
 };
 
@@ -79,7 +78,7 @@ export const useTaskStore = create<State & Actions>()((set) => ({
 
       // Update the state by filtering out the task to remove
       set((state) => ({
-        tasks: state.tasks.filter((task) => task.id !== id),
+        tasks: state.tasks.filter((task) => task._id !== id),
       }));
     } catch (error) {
       console.error("Error removing task:", error);
@@ -87,8 +86,4 @@ export const useTaskStore = create<State & Actions>()((set) => ({
   },
 
   // ### UPDATE TASK ###
-  updateTask: (id, task) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) => (task.id === id ? task : task)),
-    })),
 }));
