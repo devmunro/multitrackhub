@@ -6,6 +6,7 @@ import {
   GroupLabels,
   RhythmLabels,
   StatusLabels,
+  TitleEditor,
 } from "./ColumnComponents/ColumnComponents";
 import { Badge } from "@/components/ui/badge";
 
@@ -44,13 +45,12 @@ export const columns: ColumnDef<Titles>[] = [
     accessorKey: "title",
     header: "Title",
     cell: ({ row }) => {
-      const { group } = row.original;
-      const { title } = row.original;
+      const { _id: taskId, title: initialTitle, group } = row.original;
 
       return (
-        <div className="flex items-center">
-          <Badge> {group}</Badge>
-          <div className="ml-2">{title}</div>
+        <div className="flex items-center space-x-2">
+          <Badge>{group}</Badge>
+          <TitleEditor taskId={taskId} initialTitle={initialTitle} />
         </div>
       );
     },
