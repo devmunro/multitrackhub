@@ -28,13 +28,11 @@ import { PlusCircle } from "lucide-react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onAddTask: () => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  onAddTask,
 }: DataTableProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -138,9 +136,7 @@ export function DataTable<TData, TValue>({
               </TableCell>
             </TableRow>
           )}
-          {toggleShow && (
-            <InputTask onAddTask={onAddTask} toggleAddTask={toggleAddTask} />
-          )}
+          {toggleShow && <InputTask toggleAddTask={toggleAddTask} />}
         </TableBody>
       </Table>
     </div>

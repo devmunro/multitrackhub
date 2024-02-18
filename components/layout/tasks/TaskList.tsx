@@ -1,67 +1,19 @@
 "use client";
 import { columns } from "./Columns";
 import { DataTable } from "./DataTable";
-import { useState, useEffect } from "react";
-import taskData from "../../../data/taskDummyData.json";
-import { ColumnDef } from "@tanstack/react-table";
-
-interface Task {
-  title: string;
-  group: string;
-  rhythm: string;
-  status: string;
-}
+import { useEffect } from "react";
+import { useTaskStore } from "@/lib/store";
 
 export default function TaskList() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTask, setNewTask] = useState("");
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/api/getTasks');
-      if (!response.ok) {
-        throw new Error('Failed to fetch tasks');
-      }
-      const tasks = await response.json(); 
-      console.log(tasks)
-      setTasks(tasks); 
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleAddTask = async (taskData: Task) => {
-    try {
-      const response = await fetch('/api/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(taskData),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to add task');
-      }
-
-      setTasks((prevTasks) => [...prevTasks, taskData]); 
-      setNewTask(""); 
-    } catch (error) {
-      console.error('Error adding task:', error);
-    }
-  };
+  const { tasks, fetchTasks } = useTaskStore();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchTasks();
+  }, [fetchTasks]);
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable
-        columns={columns as any}
-        data={tasks}
-        onAddTask={handleAddTask as any}
-      />
+      <DataTable columns={columns as any} data={tasks} />
     </div>
   );
 }

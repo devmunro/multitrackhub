@@ -1,22 +1,22 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
 import {
+  DeleteButton,
   GroupLabels,
   RhythmLabels,
   StatusLabels,
+  TitleEditor,
 } from "./ColumnComponents/ColumnComponents";
-import { AlarmClockCheck, AlarmClockOff, AlarmClock } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export type Titles = {
-  id: number;
+  _id: string;
   title: string;
   status: string;
   group: string;
   rhythm: string;
 };
-const editable = false; //is the row editable, this needs to be changed
 
 export const columns: ColumnDef<Titles>[] = [
   {
@@ -45,19 +45,12 @@ export const columns: ColumnDef<Titles>[] = [
     accessorKey: "title",
     header: "Title",
     cell: ({ row }) => {
-      const { group } = row.original;
+      const { _id: taskId, title: initialTitle, group } = row.original;
 
       return (
-        <div className="flex items-center space-x-3">
-          {editable ? (
-            // Render editable Select component when truth is true
-            <GroupLabels selection={group} onChange={(value) => {}} />
-          ) : (
-            // Render this div when truth is false
-            <Badge variant="outline">{group}</Badge>
-          )}
-          {/* This line will render regardless of the truth's value */}
-          <div>{row.original.title}</div>
+        <div className="flex items-center space-x-2">
+          <Badge>{group}</Badge>
+          <TitleEditor taskId={taskId} initialTitle={initialTitle} />
         </div>
       );
     },
@@ -67,13 +60,9 @@ export const columns: ColumnDef<Titles>[] = [
     header: "Rhythm",
     cell: ({ row }) => {
       const { rhythm } = row.original;
-      return editable ? (
-        // Render editable Select component when truth is true
-        <RhythmLabels selection={rhythm} onChange={(value) => {}} />
-      ) : (
-        // Render this div with static text when truth is false
-        <div>{rhythm}</div>
-      );
+      const { _id } = row.original;
+
+      return <RhythmLabels selection={rhythm} taskId={_id} />;
     },
     enableHiding: true,
     enableSorting: true,
@@ -84,34 +73,19 @@ export const columns: ColumnDef<Titles>[] = [
     header: "Status",
     cell: ({ row }) => {
       const { status } = row.original;
+      const { _id } = row.original;
 
-      return editable ? (
-        // Render the Select component for editable state
-        <StatusLabels selection={status} onChange={(value) => {}} />
-      ) : (
-        // Render static content when not editable
-        <div className="w-1/2 flex space-x-4 items-center">
-          {/* Assuming you have icons or text representation for the static view */}
-          {status === "Not Started" && (
-            <>
-              <AlarmClockOff size={20} />
-              <span>Not Started</span>
-            </>
-          )}
-          {status === "Started" && (
-            <>
-              <AlarmClock size={20} />
-              <span>Started</span>
-            </>
-          )}
-          {status === "Finished" && (
-            <>
-              <AlarmClockCheck size={20} />
-              <span>Finished</span>
-            </>
-          )}
-        </div>
-      );
+      return <StatusLabels selection={status} taskId={_id} />;
+    },
+  },
+  {
+    id: "Delete",
+    header: "",
+    cell: ({ row }) => {
+      const id = row.original._id;
+      const { group } = row.original;
+
+      return <DeleteButton selection={group} taskId={id} />;
     },
   },
 ];
