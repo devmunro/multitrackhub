@@ -10,8 +10,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuRadioItem,
+  DropdownMenuRadioGroup,
   DropdownMenuTrigger,
   DropdownMenuPortal,
   DropdownMenuSub,
@@ -24,32 +24,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export const GroupLabels = ({ selection }: { selection: string }) => {
-  return (
-    <Select value={selection} defaultValue={selection || "Learning"}>
-      <SelectTrigger className="border-0 w-min">
-        <Badge variant="outline">
-          <SelectValue>{selection}</SelectValue>
-        </Badge>
-      </SelectTrigger>
-      <SelectContent className="border-0" defaultChecked>
-        <SelectItem value="Health">
-          <Badge variant="outline">Health</Badge>
-        </SelectItem>
-        <SelectItem value="Projects">
-          <Badge variant="outline">Projects</Badge>
-        </SelectItem>
-        <SelectItem value="Intern">
-          <Badge variant="outline">Intern</Badge>
-        </SelectItem>
-        <SelectItem value="Learning">
-          <Badge variant="outline">Learning</Badge>
-        </SelectItem>
-        <SelectItem value="Education">
-          <Badge variant="outline">Education</Badge>
-        </SelectItem>
-      </SelectContent>
-    </Select>
-  );
+  return <Badge variant="outline">{selection}</Badge>;
 };
 
 export const RhythmLabels = ({
@@ -61,34 +36,41 @@ export const RhythmLabels = ({
 }) => {
   const [rhythm, setRhythm] = useState(selection);
   const updateTask = useTaskStore((state) => state.updateTask);
+  const { editingTaskId } = useTaskStore();
 
   const onChange = async (value: string) => {
     setRhythm(value);
     await updateTask({ _id: taskId, rhythm: value });
   };
   return (
-    <Select
-      value={rhythm}
-      onValueChange={onChange}
-      defaultValue={rhythm || "Normal"}
-    >
-      <SelectTrigger className="border-0 w-min">
-        <Badge variant="outline">
-          <SelectValue>{rhythm}</SelectValue>
-        </Badge>
-      </SelectTrigger>
-      <SelectContent defaultChecked>
-        <SelectItem value="Flow">
-          <Badge>Flow</Badge>
-        </SelectItem>
-        <SelectItem value="Normal">
-          <Badge>Normal</Badge>
-        </SelectItem>
-        <SelectItem value="Focus">
-          <Badge>Focus</Badge>
-        </SelectItem>
-      </SelectContent>
-    </Select>
+    <div>
+      {editingTaskId === taskId ? (
+        <Select
+          value={rhythm}
+          onValueChange={onChange}
+          defaultValue={rhythm || "Normal"}
+        >
+          <SelectTrigger className="border-0 w-min">
+            <Badge variant="outline">
+              <SelectValue>{rhythm}</SelectValue>
+            </Badge>
+          </SelectTrigger>
+          <SelectContent defaultChecked>
+            <SelectItem value="Flow">
+              <Badge>Flow</Badge>
+            </SelectItem>
+            <SelectItem value="Normal">
+              <Badge>Normal</Badge>
+            </SelectItem>
+            <SelectItem value="Focus">
+              <Badge>Focus</Badge>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      ) : (
+        <div>{rhythm || "Normal"}</div>
+      )}
+    </div>
   );
 };
 
@@ -101,6 +83,7 @@ export const StatusLabels = ({
 }) => {
   const [status, setStatus] = useState(selection);
   const updateTask = useTaskStore((state) => state.updateTask);
+  const { editingTaskId } = useTaskStore();
 
   const onChange = async (value: string) => {
     setStatus(value);
@@ -109,40 +92,69 @@ export const StatusLabels = ({
 
   return (
     <div className="w-1/2 flex space-x-4 items-center">
-      <Select
-        value={status}
-        onValueChange={onChange}
-        defaultValue={status || "Not Started"}
-      >
-        <SelectTrigger>
-          <SelectValue>{status}</SelectValue>
-        </SelectTrigger>
-        <SelectContent defaultChecked>
-          <SelectItem value="Not Started">
-            <div className="flex space-x-4 items-center">
-              <AlarmClockOff size={20} />
-              <span>Not Started</span>
-            </div>
-          </SelectItem>
-          <SelectItem value="Started">
-            <div className="flex space-x-4 items-center">
-              <AlarmClock size={20} />
-              <span>Started</span>
-            </div>
-          </SelectItem>
-          <SelectItem value="Finished">
-            <div className="flex space-x-4 items-center">
-              <AlarmClockCheck size={20} />
-              <span>Finished</span>
-            </div>
-          </SelectItem>
-        </SelectContent>
-      </Select>
+      {editingTaskId === taskId ? (
+        <Select
+          value={status}
+          onValueChange={onChange}
+          defaultValue={status || "Not Started"}
+        >
+          <SelectTrigger>
+            <Badge variant="outline">
+              <SelectValue>{status}</SelectValue>
+            </Badge>
+          </SelectTrigger>
+          <SelectContent defaultChecked>
+            <SelectItem value="Not Started">
+              <div className="flex space-x-4 items-center">
+                <AlarmClockOff size={20} />
+                <span>Not Started</span>
+              </div>
+            </SelectItem>
+            <SelectItem value="Started">
+              <div className="flex space-x-4 items-center">
+                <AlarmClock size={20} />
+                <span>Started</span>
+              </div>
+            </SelectItem>
+            <SelectItem value="Finished">
+              <div className="flex space-x-4 items-center">
+                <AlarmClockCheck size={20} />
+                <span>Finished</span>
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      ) : (
+        <div>{status}</div>
+      )}
     </div>
   );
 };
 
-export const DeleteButton = ({ taskId }: { taskId: string }) => {
+export const DeleteButton = ({
+  taskId,
+  selection,
+}: {
+  taskId: string;
+  selection: string;
+}) => {
+  const [group, setGroup] = useState(selection);
+  const updateTask = useTaskStore((state) => state.updateTask);
+  const { editingTaskId, setEditingTaskId } = useTaskStore();
+
+  const handleEditClick = () => {
+    if (editingTaskId === taskId) {
+      setEditingTaskId(null); 
+    } else {
+      setEditingTaskId(taskId); 
+    }
+  };
+
+  const onChange = async (value: string) => {
+    setGroup(value);
+    await updateTask({ _id: taskId, group: value });
+  };
+
   const removeTask = useTaskStore((state) => state.removeTask);
   const handleDelete = async () => {
     await removeTask(taskId);
@@ -152,13 +164,32 @@ export const DeleteButton = ({ taskId }: { taskId: string }) => {
     <DropdownMenu>
       <DropdownMenuTrigger>...</DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleEditClick}>Edit</DropdownMenuItem>
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Label</DropdownMenuSubTrigger>
+          <DropdownMenuSubTrigger>Group</DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent>
-              <DropdownMenuItem>Email</DropdownMenuItem>
-              <DropdownMenuItem>Message</DropdownMenuItem>
+              <DropdownMenuRadioGroup
+                value={group}
+                defaultValue={group || "Learning"}
+                onValueChange={onChange}
+              >
+                <DropdownMenuRadioItem value="Health">
+                  Health
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="Projects">
+                  Projects
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="Intern">
+                  Intern
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="Learning">
+                  Learning
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="Education">
+                  Education
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>

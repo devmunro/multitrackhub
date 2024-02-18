@@ -10,17 +10,36 @@ export type Task = {
 
 export type State = {
   tasks: Task[];
+  editingTaskId: string | null;
+  isAddingNewTask: boolean;
+
 };
+
 
 export type Actions = {
   addTask: (task: Task) => Promise<void>;
   removeTask: (id: string) => Promise<void>;
   fetchTasks: () => Promise<void>;
   updateTask: (task: Task) => Promise<void>;
+  setEditingTaskId: (id: string | null) => void;
+  setIsAddingNewTask: (isAdding: boolean) => void;
+
+
 };
 
 export const useTaskStore = create<State & Actions>()((set, get) => ({
-  tasks: [],
+    tasks: [],
+    editingTaskId: "new",
+    isAddingNewTask: false,
+  
+    // Setters
+    setEditingTaskId: (taskId: string | null) => set({ editingTaskId: taskId }),
+    setIsAddingNewTask: (isAdding: boolean) => set({ isAddingNewTask: isAdding }),
+
+
+
+  
+
 
   // ### FETCH TASKS ###
   fetchTasks: async () => {

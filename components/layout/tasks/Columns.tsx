@@ -82,8 +82,10 @@ export const columns: ColumnDef<Titles>[] = [
     header: "",
     cell: ({ row }) => {
       const id = row.original._id;
+      const { group } = row.original;
 
-      return <DeleteButton taskId={id} />;
+
+      return <DeleteButton selection={group} taskId={id} />;
     },
   },
 ];
