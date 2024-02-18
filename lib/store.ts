@@ -17,7 +17,7 @@ export type Actions = {
   addTask: (task: Task) => Promise<void>;
   removeTask: (id: string) => Promise<void>;
   fetchTasks: () => Promise<void>;
-  updateTask: (task: Task) => Promise<void>;
+  updateTask: (task: Partial<Task>) => Promise<void>;
 };
 
 export const useTaskStore = create<State & Actions>()((set, get) => ({
@@ -91,9 +91,8 @@ export const useTaskStore = create<State & Actions>()((set, get) => ({
   },
 
   // ### UPDATE TASK ###
-  updateTask: async (updatedTask) => {
+  updateTask: async (updatedTask: Partial<Task>) => {
     try {
-        console.log(updatedTask, "updated task")
       const response = await fetch("/api/updateTask", {
         method: "PUT",
         headers: {
