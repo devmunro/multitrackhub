@@ -23,6 +23,55 @@ import { AlarmClockCheck, AlarmClockOff, AlarmClock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
+export const TitleEditor = ({
+  taskId,
+  initialTitle,
+}: {
+  taskId: string;
+  initialTitle: string;
+}) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(initialTitle);
+  const { updateTask } = useTaskStore();
+  const handleKeyDown = async (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); 
+      await updateTask({ _id: taskId, title });
+      setIsEditing(false); 
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  const toggleEdit = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsEditing(true);
+  };
+
+  return (
+    <div className="flex items-center space-x-2 cursor-pointer">
+      {isEditing ? (
+        <input
+          type="text"
+          value={title}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onBlur={() => setIsEditing(false)} // Exit editing mode if the input loses focus
+          autoFocus // Automatically focus the input
+          className="border-2" // Add more styling as needed
+        />
+      ) : (
+        // Only attach toggleEdit to the span, so clicking the input doesn't toggle the state
+        <span onClick={toggleEdit}>{title}</span>
+      )}
+    </div>
+  );
+};
+
 export const GroupLabels = ({
   selection,
   handleChange,
