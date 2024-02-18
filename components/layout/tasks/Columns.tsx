@@ -7,6 +7,7 @@ import {
   RhythmLabels,
   StatusLabels,
 } from "./ColumnComponents/ColumnComponents";
+import { Badge } from "@/components/ui/badge";
 
 export type Titles = {
   _id: string;
@@ -48,7 +49,7 @@ export const columns: ColumnDef<Titles>[] = [
 
       return (
         <div className="flex items-center">
-          <GroupLabels selection={group} />
+          <Badge> {group}</Badge>
           <div className="ml-2">{title}</div>
         </div>
       );
@@ -83,7 +84,6 @@ export const columns: ColumnDef<Titles>[] = [
     cell: ({ row }) => {
       const id = row.original._id;
       const { group } = row.original;
-
 
       return <DeleteButton selection={group} taskId={id} />;
     },
