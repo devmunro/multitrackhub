@@ -36,7 +36,6 @@ export const RhythmLabels = ({
 }) => {
   const [rhythm, setRhythm] = useState(selection);
   const updateTask = useTaskStore((state) => state.updateTask);
-  const { editingTaskId } = useTaskStore();
 
   const onChange = async (value: string) => {
     setRhythm(value);
@@ -44,7 +43,6 @@ export const RhythmLabels = ({
   };
   return (
     <div>
-      {editingTaskId === taskId ? (
         <Select
           value={rhythm}
           onValueChange={onChange}
@@ -67,9 +65,7 @@ export const RhythmLabels = ({
             </SelectItem>
           </SelectContent>
         </Select>
-      ) : (
-        <div>{rhythm || "Normal"}</div>
-      )}
+      
     </div>
   );
 };
@@ -83,7 +79,6 @@ export const StatusLabels = ({
 }) => {
   const [status, setStatus] = useState(selection);
   const updateTask = useTaskStore((state) => state.updateTask);
-  const { editingTaskId } = useTaskStore();
 
   const onChange = async (value: string) => {
     setStatus(value);
@@ -92,7 +87,6 @@ export const StatusLabels = ({
 
   return (
     <div className="w-1/2 flex space-x-4 items-center">
-      {editingTaskId === taskId ? (
         <Select
           value={status}
           onValueChange={onChange}
@@ -100,7 +94,7 @@ export const StatusLabels = ({
         >
           <SelectTrigger>
             <Badge variant="outline">
-              <SelectValue>{status}</SelectValue>
+              <div>{status}</div>
             </Badge>
           </SelectTrigger>
           <SelectContent defaultChecked>
@@ -124,9 +118,7 @@ export const StatusLabels = ({
             </SelectItem>
           </SelectContent>
         </Select>
-      ) : (
-        <div>{status}</div>
-      )}
+      
     </div>
   );
 };
@@ -140,15 +132,6 @@ export const DeleteButton = ({
 }) => {
   const [group, setGroup] = useState(selection);
   const updateTask = useTaskStore((state) => state.updateTask);
-  const { editingTaskId, setEditingTaskId } = useTaskStore();
-
-  const handleEditClick = () => {
-    if (editingTaskId === taskId) {
-      setEditingTaskId(null); 
-    } else {
-      setEditingTaskId(taskId); 
-    }
-  };
 
   const onChange = async (value: string) => {
     setGroup(value);
@@ -164,7 +147,6 @@ export const DeleteButton = ({
     <DropdownMenu>
       <DropdownMenuTrigger>...</DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={handleEditClick}>Edit</DropdownMenuItem>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Group</DropdownMenuSubTrigger>
           <DropdownMenuPortal>
