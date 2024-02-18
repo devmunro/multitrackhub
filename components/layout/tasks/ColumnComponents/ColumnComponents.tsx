@@ -188,29 +188,29 @@ export const StatusLabels = ({
         defaultValue={status || "Not Started"}
       >
         <SelectTrigger>
-          <div className="flex space-x-4 items-center">
-            {status === "Not Started" && <AlarmClockOff size={20} />}
-            {status === "Started" && <AlarmClock size={20} />}
-            {status === "Finished" && <AlarmClockCheck size={20} />}
+          <div className="flex space-x-4 items-center text-xs">
+            {status === "Not Started" && <AlarmClockOff size={14} />}
+            {status === "Started" && <AlarmClock size={14} />}
+            {status === "Finished" && <AlarmClockCheck size={14} />}
             <span>{status}</span>
           </div>
         </SelectTrigger>
         <SelectContent defaultChecked>
           <SelectItem value="Not Started">
-            <div className="flex space-x-4 items-center">
-              <AlarmClockOff size={20} />
+            <div className="flex space-x-4 items-center text-xs">
+              <AlarmClockOff size={14} />
               <span>Not Started</span>
             </div>
           </SelectItem>
           <SelectItem value="Started">
-            <div className="flex space-x-4 items-center">
-              <AlarmClock size={20} />
+            <div className="flex space-x-4 items-center text-xs">
+              <AlarmClock size={14} />
               <span>Started</span>
             </div>
           </SelectItem>
           <SelectItem value="Finished">
-            <div className="flex space-x-4 items-center">
-              <AlarmClockCheck size={20} />
+            <div className="flex space-x-4 items-center text-xs">
+              <AlarmClockCheck size={14} />
               <span>Finished</span>
             </div>
           </SelectItem>
