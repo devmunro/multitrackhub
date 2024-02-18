@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToMongoDB } from "../../lib/db";
+import { ObjectId } from "mongodb";
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,7 +15,7 @@ export default async function handler(
       const result = await collection.insertOne(task);
 
       // Get the inserted task with its _id
-      const insertedTask = { ...task};
+      const insertedTask = { ...task };
 
       res
         .status(201)

@@ -7,6 +7,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         // Destructure _id and the rest of the data from the request body
         const { _id, ...updateData } = req.body;
+
+        console.log(_id, updateData, "update data");
   
         // Check if _id is provided, return an error if not
         if (!_id) {

@@ -47,10 +47,7 @@ const InputTask: React.FC<InputProps> = ({ toggleAddTask }) => {
     <TableRow className="text-xs disabled:hover ">
       <TableCell></TableCell>
       <TableCell className="flex space-x-2">
-        <GroupLabels
-          selection={taskData.group}
-          onChange={(value: string) => handleChange(value, "group")}
-        />
+        <GroupLabels selection={taskData.group} />
         <input
           className="border-2"
           type="text"
@@ -64,14 +61,10 @@ const InputTask: React.FC<InputProps> = ({ toggleAddTask }) => {
       <TableCell>
         <RhythmLabels
           selection={taskData.rhythm}
-          onChange={(value: string) => handleChange(value, "rhythm")}
         />
       </TableCell>
       <TableCell>
-        <StatusLabels
-          selection={taskData.status}
-          onChange={(value: string) => handleChange(value, "status")}
-        />
+        <StatusLabels selection={taskData.status} />
       </TableCell>
       <TableCell>
         <Button variant={"outline"} onClick={handleAddTask}>

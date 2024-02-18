@@ -16,9 +16,10 @@ export type Actions = {
   addTask: (task: Task) => Promise<void>;
   removeTask: (id: string) => Promise<void>;
   fetchTasks: () => Promise<void>;
+  updateTask: (task: Task) => Promise<void>;
 };
 
-export const useTaskStore = create<State & Actions>()((set) => ({
+export const useTaskStore = create<State & Actions>()((set, get) => ({
   tasks: [],
 
   // ### FETCH TASKS ###
@@ -38,8 +39,7 @@ export const useTaskStore = create<State & Actions>()((set) => ({
   // ### ADD TASK ###
   addTask: async (taskData) => {
     try {
-
-        console.log(taskData)
+      console.log(taskData);
       const response = await fetch("/api/addTask", {
         method: "POST",
         headers: {
@@ -90,4 +90,29 @@ export const useTaskStore = create<State & Actions>()((set) => ({
   },
 
   // ### UPDATE TASK ###
+  updateTask: async (updatedTask) => {
+    try {
+        console.log(updatedTask, "updated task")
+      const response = await fetch("/api/updateTask", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTask),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update task");
+      }
+
+      // Update the local state with the updated task
+      set((state) => ({
+        tasks: state.tasks.map((task) =>
+          task._id === updatedTask._id ? { ...task, ...updatedTask } : task
+        ),
+      }));
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  },
 }));
