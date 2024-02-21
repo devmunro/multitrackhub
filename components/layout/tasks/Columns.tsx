@@ -3,7 +3,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DeleteButton,
-  GroupLabels,
   RhythmLabels,
   StatusLabels,
   TitleEditor,
@@ -87,5 +86,6 @@ export const columns: ColumnDef<Titles>[] = [
 
       return <DeleteButton selection={group} taskId={id} />;
     },
+    enableHiding: false,
   },
 ];
