@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../../../components/ui/select";
+} from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,11 +16,11 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-} from "../../../../components/ui/dropdown-menu";
-import { useTaskStore } from "../../../../lib/store";
+} from "@/components/ui/dropdown-menu";
+import { useTaskStore } from "@/lib/store";
 import { AlarmClockCheck, AlarmClockOff, AlarmClock } from "lucide-react";
 import { useState } from "react";
-import { Badge } from "../../../ui/badge";
+import { Badge } from "@/components/ui/badge";
 
 export const TitleEditor = ({
   taskId,

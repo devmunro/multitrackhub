@@ -14,15 +14,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../../components/ui/table";
+} from "@/components/ui/table";
 import InputTask from "./InputTask";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "../../../components/ui/dropdown-menu";
-import { Button } from "../../../components/ui/button";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {

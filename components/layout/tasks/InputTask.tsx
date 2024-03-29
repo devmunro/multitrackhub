@@ -1,13 +1,13 @@
 import { KeyboardEvent, useState } from "react";
-import { TableCell, TableRow } from "../../../components/ui/table";
+import { TableCell, TableRow } from "@/components/ui/table";
 import {
   GroupLabels,
   RhythmLabels,
   StatusLabels,
 } from "./ColumnComponents/ColumnComponents";
 import { PlusCircleIcon } from "lucide-react";
-import { Button } from "../../../components/ui/button";
-import { Task, useTaskStore } from "../../../lib/store";
+import { Button } from "@/components/ui/button";
+import { Task, useTaskStore } from "@/lib/store";
 
 interface InputProps {
   toggleAddTask: () => void;
