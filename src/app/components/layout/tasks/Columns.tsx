@@ -1,13 +1,13 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "../../../components/ui/checkbox";
 import {
   DeleteButton,
   RhythmLabels,
   StatusLabels,
   TitleEditor,
 } from "./ColumnComponents/ColumnComponents";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "../../../components/ui/badge";
 
 export type Titles = {
   _id: string;

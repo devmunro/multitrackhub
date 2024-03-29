@@ -1,11 +1,10 @@
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../../../../components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,11 +16,11 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useTaskStore } from "@/lib/store";
+} from "../../../../components/ui/dropdown-menu";
+import { useTaskStore } from "../../../../lib/store";
 import { AlarmClockCheck, AlarmClockOff, AlarmClock } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Badge } from "../../../ui/badge";
 
 export const TitleEditor = ({
   taskId,
@@ -37,9 +36,9 @@ export const TitleEditor = ({
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
-      event.preventDefault(); 
+      event.preventDefault();
       await updateTask({ _id: taskId, title });
-      setIsEditing(false); 
+      setIsEditing(false);
     }
   };
 
